@@ -1,0 +1,30 @@
+SHARED ONLINE DATABASE (so students can log in from any device)
+================================================================
+1. Go to supabase.com, create a free account and a new project.
+2. Open the project, go to SQL Editor, paste this, and click Run:
+
+   create table kv (k text primary key, v jsonb not null);
+   alter table kv enable row level security;
+   create policy "open" on kv for all to anon using (true) with check (true);
+
+3. Go to Project Settings > API. Copy:
+   - Project URL      (looks like https://abcdxyz.supabase.co)
+   - anon public key  (a long text)
+4. Open app.js (or index.html if you use the single-file version) in a text editor.
+   Near the top, find:   var SB_URL='',SB_KEY='';
+   Paste the values between the quotes:
+   var SB_URL='https://abcdxyz.supabase.co',SB_KEY='your-anon-key';
+5. Upload the files to GitHub as before. Every device now shares the same
+   accounts, exams and results. Use the Refresh button to see new data.
+
+NOTE: this simple setup keeps passwords as plain text in the database, and anyone
+who reads the page source can read the key. Fine for a trial; before real
+exams, ask for the secure server version.
+
+TROUBLESHOOTING
+- The login screen shows "Shared database: ON" when the settings are filled in.
+  If it says OFF, SB_URL and SB_KEY in app.js are still empty (each device then keeps its own data).
+- "Server error 401/403": the SQL in step 2 was not run, or the key is wrong. Use the "anon public"
+  key (starts with eyJ) or the "publishable" key (starts with sb_publishable_).
+- "Server error 404": the table "kv" does not exist. Run the SQL in step 2.
+- Always open the GitHub link on every device, not the file on your own computer.

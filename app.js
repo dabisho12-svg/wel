@@ -1,6 +1,5 @@
-/* SHARED DATABASE SETTINGS: paste your Supabase values between the quotes (see SETUP.txt).
-   If left empty, the system works only on one device (data kept in this browser). */
-var SB_URL='',SB_KEY='';
+/* Database settings are read from config.js (see SETUP.txt). */
+var SB_URL=window.SB_URL||'',SB_KEY=window.SB_KEY||'';
 var remote=!!(SB_URL&&SB_KEY),snap={},loadErr=false,loadMsg='',db={users:[],exams:[],att:[]};
 var me=null,tick=null,COL={u:'users',e:'exams',a:'att'};
 function hd(x){var h={apikey:SB_KEY,'Content-Type':'application/json'};if(SB_KEY.indexOf('eyJ')===0)h.Authorization='Bearer '+SB_KEY;return Object.assign(h,x||{})}

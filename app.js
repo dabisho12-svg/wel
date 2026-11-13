@@ -76,7 +76,10 @@ function addQ(id){var q=$('q'+id).value.trim(),o=['a','b','c','d'].map(function(
 function addTF(id){var q=$('q'+id).value.trim(),k=$('k'+id).value==='B'?1:0;if(!q){alert('Enter the question. Correct answer A = True, B = False.');return}ex(id).qs.push({q:q,o:['True','False'],a:k});save();teacher()}
 function delQ(id,i){ex(id).qs.splice(i,1);save();teacher()}
 function delExam(id){db.exams=db.exams.filter(function(e){return e.id!==id});db.att=db.att.filter(function(a){return a.eid!==id});save();teacher()}
-function imp(id){var n=0;$('t'+id).value.split(/\n\s*\n/).forEach(function(b){var L=b.split('\n').map(function(s){return s.trim()}).filter(Boolean),q=[],o=[],a=-1;
+function imp(id){var n=0;$('t'+id).value.split(/
+\s*
+/).forEach(function(b){var L=b.split('
+').map(function(s){return s.trim()}).filter(Boolean),q=[],o=[],a=-1;
  L.forEach(function(l){var m=l.match(/^([A-D])[\).:]\s*(.+)/i),k=l.match(/^answer\s*[:\-]?\s*([A-D])/i);if(k)a='ABCD'.indexOf(k[1].toUpperCase());else if(m)o.push(m[2]);else if(!o.length)q.push(l.replace(/^\d+[\).]\s*/,''))});
  if(q.length&&o.length>1&&a>=0&&a<o.length){ex(id).qs.push({q:q.join(' '),o:o,a:a});n++}});
  save();teacher();alert(n+' question(s) imported.')}
@@ -97,11 +100,11 @@ async function pdfImp(id,inp){var f=inp.files[0];if(!f)return;var st=$('ps'+id);
   showPv(id)}catch(e){st.textContent='Could not read this PDF.'}}
 function parseQs(L){var qs=[],c=null,last=null,key={};
  var ki=L.findIndex(function(l){return /^answer\s*key/i.test(l)});
- if(ki>=0){L.slice(ki+1).join(' ').replace(/(\d+)\s*[\.\):\-]?\s*([A-D])\b/gi,function(m,n,a){key[n]=a.toUpperCase();return m});L=L.slice(0,ki)}
+ if(ki>=0){L.slice(ki+1).join(' ').replace(/(\d+)\s*[\.\):\-]?\s*([A-D])/gi,function(m,n,a){key[n]=a.toUpperCase();return m});L=L.slice(0,ki)}
  L.forEach(function(l){var m;
   if(m=l.match(/^(\d+)\s*[\.\)]\s+(.+)/)){c={n:m[1],q:m[2],o:[],a:-1};qs.push(c);last='q';return}
   if(!c)return;
-  if(m=l.match(/^(?:correct answer|answer|ans)\s*[:\-]?\s*\(?([A-D])\b/i)){c.a='ABCD'.indexOf(m[1].toUpperCase());last=null;return}
+  if(m=l.match(/^(?:correct answer|answer|ans)\s*[:\-]?\s*\(?([A-D])/i)){c.a='ABCD'.indexOf(m[1].toUpperCase());last=null;return}
   var parts=l.split(/\s+(?=\(?[A-D][\.\)]\s)/);
   if(/^\(?[A-D][\.\)]\s*/i.test(parts[0])){parts.forEach(function(s){var k=s.match(/^\(?[A-D][\.\)]\s*(.*)/i);if(k&&c.o.length<4)c.o.push(k[1])});last='o';return}
   if(last==='q')c.q+=' '+l;else if(last==='o'&&c.o.length)c.o[c.o.length-1]+=' '+l});

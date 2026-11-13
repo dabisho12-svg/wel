@@ -1,5 +1,3 @@
-// PASTE YOUR SUPABASE VALUES BETWEEN THE QUOTES, THEN SAVE THE FILE.
-// Project URL looks like:  https://abcdxyz.supabase.co
-// Key = "anon public" key (starts with eyJ) or "publishable" key (starts with sb_publishable_)
-window.SB_URL = '';
-window.SB_KEY = '';
+// Paste your Supabase Project URL and anon public key below (see SETUP.txt)
+window.SB_URL = 'https://nmeprqsmfbmrdkasdxll.supabase.co';
+window.SB_KEY = 'sb_publishable_F2MKxUSfNkDPitaKN0Xhbw_VDBtjZUZ';
